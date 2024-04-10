@@ -108,8 +108,10 @@ export const NavMenuLink = styled(NavLink)`
   line-height: 1.5;
   padding: 10px 27px;
   color: rgba(239, 237, 232, 1);
-  border: 1px solid rgba(239, 237, 232, 0.2);
   border-radius: 12px;
+  border: 1px solid
+    ${props =>
+      props.active ? 'var(--white-color)' : 'rgba(239, 237, 232, 0.2)'};
 
   @media screen and (min-width: 768px) {
     font-size: 16px;

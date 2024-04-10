@@ -1,5 +1,5 @@
 import { Icon } from 'components/Icon/Icon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   UserContainer,
   NavContainer,
@@ -14,12 +14,12 @@ import {
 import { useMediaQuery } from 'react-responsive';
 import { fetchUserLogout } from '../../redux/user/operations';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export const UserMenu = () => {
-  // const isTablet = useMediaQuery({ minWidth: 768 });
-  // const isMobile = useMediaQuery({ maxWidth: 768 });
   const isDesktop = useMediaQuery({ minWidth: 1440 });
 
+  const location = useLocation();
   const [isActivePage, setIsActivePage] = useState('');
   const dispatch = useDispatch();
 
@@ -29,13 +29,31 @@ export const UserMenu = () => {
     setIsActivePage(name);
   };
 
+  useEffect(() => {
+    const determineActivePage = () => {
+      const pathname = location.pathname;
+      if (pathname === '/diary') {
+        setIsActivePage('diary');
+      } else if (pathname === '/products') {
+        setIsActivePage('products');
+      } else if (pathname === '/exercises') {
+        setIsActivePage('exercises');
+      }
+    };
+
+    determineActivePage();
+  }, [location.pathname]);
+
   return (
     <UserContainer>
       <NavContainer>
         <StyledNavLink
           style={
-            isActivePage === 'diary'
-              ? { backgroundColor: 'var(--orange-color)' }
+            isActivePage === 'diary' && location.pathname !== '/settings'
+              ? {
+                  backgroundColor: 'var(--orange-color)',
+                  border: '1px solid transparent',
+                }
               : { backgroundColor: 'transparent' }
           }
           onClick={() => handleActivePage('diary')}
@@ -45,8 +63,11 @@ export const UserMenu = () => {
         </StyledNavLink>
         <StyledNavLink
           style={
-            isActivePage === 'products'
-              ? { backgroundColor: 'var(--orange-color)' }
+            isActivePage === 'products' && location.pathname !== '/settings'
+              ? {
+                  backgroundColor: 'var(--orange-color)',
+                  border: '1px solid transparent',
+                }
               : { backgroundColor: 'transparent' }
           }
           onClick={() => handleActivePage('products')}
@@ -56,8 +77,11 @@ export const UserMenu = () => {
         </StyledNavLink>
         <StyledNavLink
           style={
-            isActivePage === 'exercises'
-              ? { backgroundColor: 'var(--orange-color)' }
+            isActivePage === 'exercises' && location.pathname !== '/settings'
+              ? {
+                  backgroundColor: 'var(--orange-color)',
+                  border: '1px solid transparent',
+                }
               : { backgroundColor: 'transparent' }
           }
           onClick={() => handleActivePage('exercises')}

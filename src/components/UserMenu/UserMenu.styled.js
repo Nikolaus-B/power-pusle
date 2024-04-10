@@ -34,8 +34,7 @@ export const StyledNavLink = styled(NavLink)`
   font-size: 16px;
 
   &:hover {
-    background-color: #e6533c;
-    border: 1px solid transparent;
+    border: 1px solid var(--white-color);
   }
 `;
 

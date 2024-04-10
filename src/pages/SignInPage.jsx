@@ -140,14 +140,14 @@ function SignInPage() {
                       window.innerWidth >= 1440
                         ? '424px'
                         : window.innerWidth >= 768
-                        ? '360px'
+                        ? '357px'
                         : '320px',
                     top:
                       window.innerWidth >= 1440
-                        ? '342px'
+                        ? '310px'
                         : window.innerWidth >= 768
-                        ? '332px'
-                        : '275px',
+                        ? '299px'
+                        : '249px',
                   }}
                 >
                   <use href={pulseIcon + '#icon-eye-off'}></use>
