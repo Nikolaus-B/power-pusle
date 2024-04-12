@@ -80,6 +80,9 @@ export const fetchUserAvatars = createAsyncThunk(
           },
         }
       );
+
+      console.log(response.data);
+
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);

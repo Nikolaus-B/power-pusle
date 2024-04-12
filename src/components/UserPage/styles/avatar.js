@@ -8,6 +8,8 @@ const container = defineStyle({
   border: '1px solid #e6533c',
 
   bg: 'rgba(48, 48, 48, 0.3)',
+  color: 'rgba(239, 237,232, 0.1)',
+  objectFit: 'cover',
 });
 
 const base = defineStyle({

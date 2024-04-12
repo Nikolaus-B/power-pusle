@@ -93,15 +93,16 @@ const userSlice = createSlice({
         state.user = {
           name: '',
           email: '',
-          blood: '',
+          blood: 0,
           sex: '',
-          height: '',
-          currentWeight: '',
-          desiredWeight: '',
+          height: 0,
+          currentWeight: 0,
+          desiredWeight: 0,
           birthday: '',
-          levelActivity: '',
+          levelActivity: 0,
+          avatarURL: '',
         };
-        state.token = null;
+        state.token = '';
         state.isLoggedIn = false;
         state.bmr = 0;
         state.dailyRateSports = 0;

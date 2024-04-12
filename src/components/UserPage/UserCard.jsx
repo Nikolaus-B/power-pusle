@@ -40,6 +40,8 @@ export const UserCard = () => {
   const dispatch = useDispatch();
   const { user, bmr, dailyRateSports } = useAuth();
 
+  console.log(user.avatarURL);
+
   useEffect(() => {
     dispatch(fetchUserCurrent());
   }, [dispatch]);
@@ -54,14 +56,14 @@ export const UserCard = () => {
   const [selectedAvatar, setAvatar] = useState(null);
 
   const handleAvatarChange = e => {
-    const avatar = e.target.files[0];
+    const avatar = e.target.file;
+    console.log(avatar);
     setAvatar(avatar);
   };
 
   const appendAvatar = avatar => {
     const formData = new FormData();
     formData.append('avatar', selectedAvatar);
-    return avatar;
   };
 
   return (
@@ -74,16 +76,14 @@ export const UserCard = () => {
                 <Image
                   src={
                     user ? (
-                      `https://power-pulse-back.onrender.com/${user.avatarURL}`
+                      user.avatarURL
                     ) : (
                       <AvatarPlug w={[41, 68, 68]} h={[41, 68, 68]} />
                     )
                   }
-                  w={[100, 150, 150]}
-                  h={[100, 150, 150]}
-                  objectFit="cover"
+                  w={[88, 148, 148]}
+                  h={[88, 148, 148]}
                   rounded="50%"
-                  color="rgba(239, 237,232, 0.1)"
                 />
               }
               pos="relative"
@@ -105,15 +105,13 @@ export const UserCard = () => {
                 onClick={appendAvatar(handleAvatarChange)}
                 //-----------------------
                 pos="absolute"
-                right={[8, 14, 14]}
-                bottom={-6}
+                right={[7, 14, 14]}
+                bottom={[-6, -6, -6]}
                 variant="unstyled"
-                zIndex="1000"
+                zIndex="99"
+                cursor="pointer"
               >
-                <Image
-                  src={CheckMark}
-                  boxSize={{ base: '24px', md: '32px', xl: '32px' }}
-                />
+                <Image src={CheckMark} boxSize={8} />
               </FormLabel>
             </Avatar>
           </VStack>
@@ -142,7 +140,7 @@ export const UserCard = () => {
           >
             <CardHeader>
               <HStack>
-                <FoodIcon iconid={'food'} width={'20px'} height={'20px'} />
+                <FoodIcon iconid="food" width="20px" height="20px" />
                 <Text
                   color="rgba(239, 237, 232, 0.8)"
                   lineHeight={['133%', '150%', '150%']}

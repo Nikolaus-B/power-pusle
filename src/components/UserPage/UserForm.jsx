@@ -7,13 +7,11 @@ import {
   FormLabel,
   Stack,
   FormErrorMessage,
-  VStack,
   HStack,
-  RadioGroup,
   Text,
   Button,
 } from '@chakra-ui/react';
-import { Radio } from './styles/field.styled';
+// import { Radio } from './styles/field.styled';
 
 //----------------------------------------------------
 import { CheckCircleIcon } from '@chakra-ui/icons';
@@ -22,6 +20,9 @@ import { CheckCircleIcon } from '@chakra-ui/icons';
 import { useDispatch } from 'react-redux';
 import { fetchUserParams } from '../../redux/user/operations';
 import { useAuth } from '../../hooks/AuthHook';
+import { SexFilter } from './SexRadioGroup';
+import { BloodFilter } from './BloodRadioGroup';
+import { ActivityFilter } from './ActivityRadioGroup';
 // import StyledDatepicker from './StyledDatePicker.js';
 
 //----------------------------------------------------
@@ -64,9 +65,9 @@ export const UserForm = () => {
         name: name,
         blood: Number(blood),
         sex: sex,
-        height: height,
-        currentWeight: currentWeight,
-        desiredWeight: desiredWeight,
+        height: Number(height),
+        currentWeight: Number(currentWeight),
+        desiredWeight: Number(desiredWeight),
         birthday: birthday,
         levelActivity: Number(levelActivity),
       })
@@ -77,13 +78,13 @@ export const UserForm = () => {
     <Formik
       initialValues={{
         name: '',
-        blood: '',
+        blood: 0,
         sex: '',
-        height: '',
-        currentWeight: '',
-        desiredWeight: '',
+        height: 0,
+        currentWeight: 0,
+        desiredWeight: 0,
         birthday: '',
-        levelActivity: '',
+        levelActivity: 0,
       }}
       validationSchema={validation}
       onSubmit={(values, actions) => {
@@ -335,142 +336,12 @@ export const UserForm = () => {
                 Blood
               </Text>
               <HStack justify="space-between">
-                <RadioGroup
-                  size={{ base: 'base', md: 'md', xl: 'md' }}
-                  variant="groove"
-                >
-                  <VStack>
-                    <HStack spacing="8px">
-                      <FormLabel>
-                        <Radio
-                          type="radio"
-                          name="blood"
-                          value="1"
-                          checked={user?.blood === 1 ? true : false}
-                        />
-                        1
-                      </FormLabel>
-                      <FormLabel>
-                        <Radio
-                          type="radio"
-                          name="blood"
-                          value="2"
-                          checked={user?.blood === 2 ? true : false}
-                        />
-                        2
-                      </FormLabel>
-                      <FormLabel>
-                        <Radio
-                          type="radio"
-                          name="blood"
-                          value="3"
-                          checked={user?.blood === 3 ? true : false}
-                        />
-                        3
-                      </FormLabel>
-                      <FormLabel>
-                        <Radio
-                          type="radio"
-                          name="blood"
-                          value="4"
-                          checked={user?.blood === 4 ? true : false}
-                        />
-                        4
-                      </FormLabel>
-                    </HStack>
-                  </VStack>
-                </RadioGroup>
-                <RadioGroup size={{ base: 'base', md: 'md' }} variant="groove">
-                  <HStack spacing="8px">
-                    <FormLabel>
-                      <Radio
-                        type="radio"
-                        name="sex"
-                        value="male"
-                        checked={user?.sex === 'male' ? true : false}
-                      />
-                      Male
-                    </FormLabel>
-                    <FormLabel>
-                      <Radio
-                        type="radio"
-                        name="sex"
-                        value="female"
-                        checked={user?.sex === 'female' ? true : false}
-                      />
-                      Female
-                    </FormLabel>
-                  </HStack>
-                </RadioGroup>
+                <BloodFilter user={user} />
+                <SexFilter user={user} />
               </HStack>
             </Stack>
 
-            <RadioGroup
-              fontSize={[14, 16, 16]}
-              lineHeight={['129%', '150%', '150%']}
-              size={{ base: 'base', md: 'md', xl: 'md' }}
-              variant="groove"
-            >
-              <VStack spacing="8px" align="flex-start">
-                <FormLabel>
-                  <Radio
-                    type="radio"
-                    name="levelActivity"
-                    value="1"
-                    checked={user?.levelActivity === 1 ? true : false}
-                  />
-                  <Text as="span" width={[310, 523, 523]}>
-                    Sedentary lifestyle (little or no physical activity)
-                  </Text>
-                </FormLabel>
-                <FormLabel>
-                  <Radio
-                    type="radio"
-                    name="levelActivity"
-                    value="2"
-                    checked={user?.levelActivity === 2 ? true : false}
-                  />
-                  <Text as="span" width={[310, 523, 523]}>
-                    Light activity (light exercises/sports 1-3 days per week)
-                  </Text>
-                </FormLabel>
-                <FormLabel>
-                  <Radio
-                    type="radio"
-                    name="levelActivity"
-                    value="3"
-                    checked={user?.levelActivity === 3 ? true : false}
-                  />
-                  <Text as="span" width={[310, 523, 523]}>
-                    Moderately active (moderate exercises/sports 3-5 days per
-                    week)
-                  </Text>
-                </FormLabel>
-                <FormLabel>
-                  <Radio
-                    type="radio"
-                    name="levelActivity"
-                    value="4"
-                    checked={user?.levelActivity === 4 ? true : false}
-                  />
-                  <Text as="span" width={[310, 523, 523]}>
-                    Very active (intense exercises/sports 6-7 days per week)
-                  </Text>
-                </FormLabel>
-                <FormLabel>
-                  <Radio
-                    type="radio"
-                    name="levelActivity"
-                    value="5"
-                    checked={user?.levelActivity === 5 ? true : false}
-                  />
-                  <Text as="span" width={[310, 523, 523]}>
-                    Extremely active (very strenuous exercises/sports and
-                    physical work)
-                  </Text>
-                </FormLabel>
-              </VStack>
-            </RadioGroup>
+            <ActivityFilter user={user} />
           </Stack>
           <Button
             type="submit"

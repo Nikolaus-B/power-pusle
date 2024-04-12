@@ -9,14 +9,18 @@ import {
   LogOutBtn,
   SettingLink,
   LogOutText,
-  //   Photo,
+  Photo,
 } from './UserMenu.styled';
 import { useMediaQuery } from 'react-responsive';
 import { fetchUserLogout } from '../../redux/user/operations';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from 'hooks/AuthHook';
+
+import AvatarPlug from '../../img/AvatarPlug.svg';
 
 export const UserMenu = () => {
+  const { user } = useAuth();
   const isDesktop = useMediaQuery({ minWidth: 1440 });
 
   const location = useLocation();
@@ -96,7 +100,17 @@ export const UserMenu = () => {
           <Icon iconid={'settings'} width={24} height={24} />
         </SettingLink>
         <AvatarHeader>
-          {/* <Photo src={} width={46} height={46} alt="Avatar" /> */}
+          <Photo
+            src={
+              user ? (
+                `https://power-pulse-back.onrender.com/${user.avatarURL}`
+              ) : (
+                <AvatarPlug w={14} h={14} />
+              )
+            }
+            width={46}
+            height={46}
+          />
         </AvatarHeader>
 
         {isDesktop && (
@@ -109,16 +123,3 @@ export const UserMenu = () => {
     </UserContainer>
   );
 };
-
-{
-  /* <Image
-  src={
-    user
-      ? `https://power-pulse-back.onrender.com/${user.avatarURL}`
-      : 'no-image'
-  }
-  w={[100, 150, 150]}
-  h={[100, 150, 150]}
-  color="rgba(239, 237,232, 0.1)"
-/>; */
-}
