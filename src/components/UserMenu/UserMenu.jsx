@@ -101,13 +101,7 @@ export const UserMenu = () => {
         </SettingLink>
         <AvatarHeader>
           <Photo
-            src={
-              user ? (
-                `https://power-pulse-back.onrender.com/${user.avatarURL}`
-              ) : (
-                <AvatarPlug w={14} h={14} />
-              )
-            }
+            src={user ? user.avatarURL : <AvatarPlug w={14} h={14} />}
             width={46}
             height={46}
           />
