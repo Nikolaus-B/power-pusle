@@ -60,13 +60,11 @@ export const SexFilter = ({ user }) => {
     );
   }
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
+  const { getRadioProps, getRootProps } = useRadioGroup({
     defaultValue: sex,
     name: 'sex',
     type: 'radio',
   });
-
-  console.log(value);
 
   return (
     <HStack {...getRootProps()} spacing={2}>

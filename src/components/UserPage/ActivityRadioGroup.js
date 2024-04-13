@@ -11,34 +11,29 @@ import {
 
 const data = [
   {
-    id: 1,
     text: 'Sedentary lifestyle (little or no physical activity)',
     value: 1,
   },
   {
-    id: 2,
     text: 'Light activity (light exercises/sports 1-3 days per week)',
     value: 2,
   },
   {
-    id: 3,
     text: 'Moderately active (moderate exercises/sports 3-5 days per week)',
     value: 3,
   },
   {
-    id: 4,
     text: 'Very active (intense exercises/sports 6-7 days per week)',
     value: 4,
   },
   {
-    id: 5,
     text: 'Extremely active (very strenuous exercises/sports and physical work)',
     value: 5,
   },
 ];
 
 export const ActivityFilter = ({ user }) => {
-  const { levelActivity } = user;
+  // const { levelActivity } = user;
 
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
@@ -76,22 +71,26 @@ export const ActivityFilter = ({ user }) => {
     );
   }
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: levelActivity,
+  const { value, setValue, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: user.levelActivity,
     name: 'levelActivity',
     type: 'radio',
+    onChange: e => setValue(parseInt(e)),
   });
 
   console.log(value);
 
   return (
     <VStack {...getRootProps()} align="start" spacing={2}>
-      {data.map(({ id, text, value }) => {
+      {data.map(({ text, value }) => {
         return (
           <CustomRadio
-            key={id}
+            key={value}
             text={text}
-            {...getRadioProps({ value: value })}
+            {...getRadioProps({
+              value: value,
+              isChecked: user?.levelActivity === value ? true : false,
+            })}
           />
         );
       })}

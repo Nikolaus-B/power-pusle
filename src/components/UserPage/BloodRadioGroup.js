@@ -10,29 +10,25 @@ import {
 
 const data = [
   {
-    id: 1,
     text: '1',
     value: 1,
   },
   {
-    id: 2,
     text: '2',
     value: 2,
   },
   {
-    id: 3,
     text: '3',
     value: 3,
   },
   {
-    id: 4,
     text: '4',
     value: 4,
   },
 ];
 
 export const BloodFilter = ({ user }) => {
-  const { blood } = user;
+  // const { blood } = user;
 
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
@@ -70,22 +66,27 @@ export const BloodFilter = ({ user }) => {
     );
   }
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: blood,
+  const { value, setValue, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: user.blood,
     name: 'blood',
     type: 'radio',
+    onChange: e => setValue(parseInt(e)),
   });
 
-  console.log(value);
+  console.log(typeof value);
 
   return (
     <HStack {...getRootProps()} spacing={2}>
-      {data.map(({ id, text, value }) => {
+      {data.map(({ text, value }) => {
         return (
           <CustomRadio
-            key={id}
+            key={value}
             text={text}
-            {...getRadioProps({ value: value })}
+            value={value}
+            {...getRadioProps({
+              value: value,
+              isChecked: user?.blood === value ? true : false,
+            })}
           />
         );
       })}

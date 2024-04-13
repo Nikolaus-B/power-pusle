@@ -63,13 +63,13 @@ export const UserForm = () => {
     dispatch(
       fetchUserParams({
         name: name,
-        blood: Number(blood),
+        blood: blood,
         sex: sex,
-        height: Number(height),
-        currentWeight: Number(currentWeight),
-        desiredWeight: Number(desiredWeight),
+        height: height,
+        currentWeight: currentWeight,
+        desiredWeight: desiredWeight,
         birthday: birthday,
-        levelActivity: Number(levelActivity),
+        levelActivity: levelActivity,
       })
     );
   };
