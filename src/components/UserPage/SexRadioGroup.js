@@ -8,22 +8,7 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-const data = [
-  {
-    id: 1,
-    text: 'male',
-    value: 'male',
-  },
-  {
-    id: 2,
-    text: 'female',
-    value: 'female',
-  },
-];
-
-export const SexFilter = ({ user }) => {
-  const { sex } = user;
-
+export const SexFilter = ({ options, defaultValue, setFieldValue }) => {
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
     const { state, getInputProps, getRadioProps, getLabelProps, htmlProps } =
@@ -60,20 +45,27 @@ export const SexFilter = ({ user }) => {
     );
   }
 
-  const { getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: sex,
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue,
     name: 'sex',
     type: 'radio',
+    onChange: value => setFieldValue('sex', value),
   });
+
+  console.log(value);
 
   return (
     <HStack {...getRootProps()} spacing={2}>
-      {data.map(({ id, text, value }) => {
+      {options.map(({ id, value }) => {
         return (
           <CustomRadio
             key={id}
-            text={text}
-            {...getRadioProps({ value: value })}
+            text={value}
+            value={value}
+            {...getRadioProps({
+              value: value,
+              isChecked: setFieldValue?.sex === value ? true : false,
+            })}
           />
         );
       })}

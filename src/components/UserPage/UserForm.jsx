@@ -92,12 +92,19 @@ export const UserForm = () => {
         actions.resetForm();
       }}
     >
-      {formik => (
+      {({
+        setFieldValue,
+        handleSubmit,
+        handleChange,
+        errors,
+        touched,
+        values,
+      }) => (
         <Stack
           as="form"
           autoComplete="off"
           autoFocus={false}
-          onSubmit={formik.handleSubmit}
+          onSubmit={handleSubmit}
           spacing={[10, 4, 4]}
           paddingRight={[0, 0, 16]}
           borderRight={{
@@ -111,9 +118,7 @@ export const UserForm = () => {
               spacing="14px"
               direction={{ base: 'column', md: 'row', xl: 'row' }}
             >
-              <FormControl
-                isInvalid={formik.errors.name && formik.touched.name}
-              >
+              <FormControl isInvalid={errors.name && touched.name}>
                 <FormLabel
                   fontSize={[12, 14, 14]}
                   lineHeight={['150%', '129%', '129%']}
@@ -125,10 +130,9 @@ export const UserForm = () => {
                 <Input
                   name="name"
                   type="text"
-                  {...formik.getFieldProps('name')}
                   placeholder={user ? user.name : 'Name'}
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
+                  value={setFieldValue.name}
+                  onChange={handleChange}
                   aria-label="name"
                   aria-invalid={true}
                   w="100%"
@@ -137,7 +141,7 @@ export const UserForm = () => {
                   lineHeight={['129%', '150%', '150%']}
                 />
 
-                {formik.errors.name && formik.touched.name && (
+                {errors.name && touched.name && (
                   <FormErrorMessage
                     mt="4px"
                     color="#d80027"
@@ -146,7 +150,7 @@ export const UserForm = () => {
                     gap="4px"
                   >
                     <CheckCircleIcon fontSize={14} />
-                    {formik.errors.name}
+                    {errors.name}
                   </FormErrorMessage>
                 )}
               </FormControl>
@@ -178,7 +182,7 @@ export const UserForm = () => {
             >
               <HStack spacing="14px" w="100%">
                 <FormControl
-                  isInvalid={formik.errors.height && formik.touched.height}
+                  isInvalid={errors.height && touched.height}
                   alignSelf="baseline"
                 >
                   <FormLabel
@@ -192,17 +196,16 @@ export const UserForm = () => {
                   <Input
                     name="height"
                     type="number"
-                    {...formik.getFieldProps('height')}
                     placeholder={user ? user.height : 'Height'}
-                    value={formik.values.height}
-                    onChange={formik.handleChange}
+                    value={setFieldValue.height}
+                    onChange={handleChange}
                     aria-label="height"
                     h={['46px', '52px', '52px']}
                     fontSize={[14, 16, 16]}
                     lineHeight={['129%', '150%', '150%']}
                   />
 
-                  {formik.errors.height && formik.touched.height && (
+                  {errors.height && touched.height && (
                     <FormErrorMessage
                       mt="4px"
                       color="#d80027"
@@ -211,15 +214,13 @@ export const UserForm = () => {
                       gap="4px"
                     >
                       <CheckCircleIcon fontSize={14} />
-                      {formik.errors.height}
+                      {errors.height}
                     </FormErrorMessage>
                   )}
                 </FormControl>
 
                 <FormControl
-                  isInvalid={
-                    formik.errors.currentWeight && formik.touched.currentWeight
-                  }
+                  isInvalid={errors.currentWeight && touched.currentWeight}
                   alignSelf="baseline"
                 >
                   <FormLabel
@@ -233,36 +234,32 @@ export const UserForm = () => {
                   <Input
                     name="currentWeight"
                     type="number"
-                    {...formik.getFieldProps('currentWeight')}
                     placeholder={user ? user.currentWeight : 'Current Weight'}
-                    value={formik.values.currentWeight}
-                    onChange={formik.handleChange}
+                    value={setFieldValue.currentWeight}
+                    onChange={handleChange}
                     aria-label="currentWeight"
                     h={['46px', '52px', '52px']}
                     fontSize={[14, 16, 16]}
                     lineHeight={['129%', '150%', '150%']}
                   />
 
-                  {formik.errors.currentWeight &&
-                    formik.touched.currentWeight && (
-                      <FormErrorMessage
-                        mt="4px"
-                        color="#d80027"
-                        fontSize="12px"
-                        lineHeight="150%"
-                        gap="4px"
-                      >
-                        <CheckCircleIcon fontSize={14} />
-                        {formik.errors.currentWeight}
-                      </FormErrorMessage>
-                    )}
+                  {errors.currentWeight && touched.currentWeight && (
+                    <FormErrorMessage
+                      mt="4px"
+                      color="#d80027"
+                      fontSize="12px"
+                      lineHeight="150%"
+                      gap="4px"
+                    >
+                      <CheckCircleIcon fontSize={14} />
+                      {errors.currentWeight}
+                    </FormErrorMessage>
+                  )}
                 </FormControl>
               </HStack>
               <HStack spacing="14px" w="100%">
                 <FormControl
-                  isInvalid={
-                    formik.errors.desiredWeight && formik.touched.desiredWeight
-                  }
+                  isInvalid={errors.desiredWeight && touched.desiredWeight}
                   alignSelf="baseline"
                 >
                   <FormLabel
@@ -276,29 +273,27 @@ export const UserForm = () => {
                   <Input
                     name="desiredWeight"
                     type="number"
-                    {...formik.getFieldProps('desiredWeight')}
                     placeholder={user ? user.desiredWeight : 'Desired Weight'}
-                    value={formik.values.desiredWeight}
-                    onChange={formik.handleChange}
+                    value={setFieldValue.desiredWeight}
+                    onChange={handleChange}
                     aria-label="desiredWeight"
                     h={['46px', '52px', '52px']}
                     fontSize={[14, 16, 16]}
                     lineHeight={['129%', '150%', '150%']}
                   />
 
-                  {formik.errors.desiredWeight &&
-                    formik.touched.desiredWeight && (
-                      <FormErrorMessage
-                        mt="4px"
-                        color="#d80027"
-                        fontSize="12px"
-                        lineHeight="150%"
-                        gap="4px"
-                      >
-                        <CheckCircleIcon fontSize={14} />
-                        {formik.errors.desiredWeight}
-                      </FormErrorMessage>
-                    )}
+                  {errors.desiredWeight && touched.desiredWeight && (
+                    <FormErrorMessage
+                      mt="4px"
+                      color="#d80027"
+                      fontSize="12px"
+                      lineHeight="150%"
+                      gap="4px"
+                    >
+                      <CheckCircleIcon fontSize={14} />
+                      {errors.desiredWeight}
+                    </FormErrorMessage>
+                  )}
                 </FormControl>
 
                 <FormControl alignSelf="baseline">
@@ -313,10 +308,9 @@ export const UserForm = () => {
                   <Input
                     name="birthday"
                     type="date"
-                    {...formik.getFieldProps('birthday')}
                     placeholder={user ? user.birthday : 'Select Date'}
-                    value={formik.values.birthday}
-                    onChange={formik.handleChange}
+                    value={setFieldValue.birthday}
+                    onChange={handleChange}
                     aria-label="birthday"
                     h={{ base: '46px', md: '52px' }}
                     fontSize={{ base: '14px', md: '16px' }}
@@ -336,12 +330,67 @@ export const UserForm = () => {
                 Blood
               </Text>
               <HStack justify="space-between">
-                <BloodFilter user={user} />
-                <SexFilter user={user} />
+                <BloodFilter
+                  options={[
+                    {
+                      value: '1',
+                    },
+                    {
+                      value: '2',
+                    },
+                    {
+                      value: '3',
+                    },
+                    {
+                      value: '4',
+                    },
+                  ]}
+                  defaultValue={values.blood}
+                  setFieldValue={setFieldValue}
+                />
+                <SexFilter
+                  options={[
+                    {
+                      id: 1,
+                      value: 'male',
+                    },
+                    {
+                      id: 2,
+                      value: 'female',
+                    },
+                  ]}
+                  defaultValue={values.sex}
+                  setFieldValue={setFieldValue}
+                />
               </HStack>
             </Stack>
 
-            <ActivityFilter user={user} />
+            <ActivityFilter
+              options={[
+                {
+                  text: 'Sedentary lifestyle (little or no physical activity)',
+                  value: '1',
+                },
+                {
+                  text: 'Light activity (light exercises/sports 1-3 days per week)',
+                  value: '2',
+                },
+                {
+                  text: 'Moderately active (moderate exercises/sports 3-5 days per week)',
+                  value: '3',
+                },
+                {
+                  text: 'Very active (intense exercises/sports 6-7 days per week)',
+                  value: '4',
+                },
+                {
+                  text: 'Extremely active (very strenuous exercises/sports and physical work)',
+                  value: '5',
+                },
+              ]}
+              defaultValue={values.levelActivity}
+              setFieldValue={setFieldValue}
+            />
           </Stack>
           <Button
             type="submit"

@@ -8,28 +8,7 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-const data = [
-  {
-    text: '1',
-    value: 1,
-  },
-  {
-    text: '2',
-    value: 2,
-  },
-  {
-    text: '3',
-    value: 3,
-  },
-  {
-    text: '4',
-    value: 4,
-  },
-];
-
-export const BloodFilter = ({ user }) => {
-  // const { blood } = user;
-
+export const BloodFilter = ({ options, defaultValue, setFieldValue }) => {
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
     const { state, getInputProps, getRadioProps, getLabelProps, htmlProps } =
@@ -66,26 +45,26 @@ export const BloodFilter = ({ user }) => {
     );
   }
 
-  const { value, setValue, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: user.blood,
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue,
     name: 'blood',
     type: 'radio',
-    onChange: e => setValue(parseInt(e)),
+    onChange: value => setFieldValue('blood', parseInt(value)),
   });
 
-  console.log(typeof value);
+  console.log(value);
 
   return (
     <HStack {...getRootProps()} spacing={2}>
-      {data.map(({ text, value }) => {
+      {options.map(({ value }) => {
         return (
           <CustomRadio
             key={value}
-            text={text}
+            text={String(value)}
             value={value}
             {...getRadioProps({
               value: value,
-              isChecked: user?.blood === value ? true : false,
+              isChecked: setFieldValue?.blood === value ? true : false,
             })}
           />
         );

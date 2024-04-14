@@ -9,32 +9,7 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 
-const data = [
-  {
-    text: 'Sedentary lifestyle (little or no physical activity)',
-    value: 1,
-  },
-  {
-    text: 'Light activity (light exercises/sports 1-3 days per week)',
-    value: 2,
-  },
-  {
-    text: 'Moderately active (moderate exercises/sports 3-5 days per week)',
-    value: 3,
-  },
-  {
-    text: 'Very active (intense exercises/sports 6-7 days per week)',
-    value: 4,
-  },
-  {
-    text: 'Extremely active (very strenuous exercises/sports and physical work)',
-    value: 5,
-  },
-];
-
-export const ActivityFilter = ({ user }) => {
-  // const { levelActivity } = user;
-
+export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
     const { state, getInputProps, getRadioProps, getLabelProps, htmlProps } =
@@ -71,25 +46,26 @@ export const ActivityFilter = ({ user }) => {
     );
   }
 
-  const { value, setValue, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: user.levelActivity,
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue,
     name: 'levelActivity',
     type: 'radio',
-    onChange: e => setValue(parseInt(e)),
+    onChange: value => setFieldValue('levelActivity', parseInt(value)),
   });
 
   console.log(value);
 
   return (
     <VStack {...getRootProps()} align="start" spacing={2}>
-      {data.map(({ text, value }) => {
+      {options.map(({ text, value }) => {
         return (
           <CustomRadio
             key={value}
-            text={text}
+            text={String(text)}
+            value={value}
             {...getRadioProps({
               value: value,
-              isChecked: user?.levelActivity === value ? true : false,
+              isChecked: setFieldValue?.levelActivity === value ? true : false,
             })}
           />
         );
