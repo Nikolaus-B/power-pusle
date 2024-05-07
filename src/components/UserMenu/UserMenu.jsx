@@ -15,12 +15,13 @@ import { useMediaQuery } from 'react-responsive';
 import { fetchUserLogout } from '../../redux/user/operations';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from 'hooks/AuthHook';
+import { useHook } from 'hooks/AuthHook';
 
 import AvatarPlug from '../../img/AvatarPlug.svg';
+import { Image } from '@chakra-ui/react';
 
 export const UserMenu = () => {
-  const { user } = useAuth();
+  const { user } = useHook();
   const isDesktop = useMediaQuery({ minWidth: 1440 });
 
   const location = useLocation();
@@ -97,13 +98,18 @@ export const UserMenu = () => {
 
       <UserData>
         <SettingLink to="/settings">
-          <Icon iconid={'settings'} width={24} height={24} />
+          <Icon iconid="settings" width={24} height={24} />
         </SettingLink>
         <AvatarHeader>
-          <Photo
-            src={user ? user.avatarURL : <AvatarPlug w={14} h={14} />}
-            width={46}
-            height={46}
+          <Image
+            as={Photo}
+            src={
+              user?.avatarURL
+                ? [`https://power-pulse-back.onrender.com/${user.avatarURL}`]
+                : [AvatarPlug]
+            }
+            w={user?.avatarURL !== '' ? '46px' : '24px'}
+            h={user?.avatarURL !== '' ? '46px' : '24px'}
           />
         </AvatarHeader>
 

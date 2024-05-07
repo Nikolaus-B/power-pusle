@@ -9,6 +9,10 @@ const setAuthHeader = token => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
+const removeAuthHeader = () => {
+  axios.defaults.headers.common.Authorization = ``;
+};
+
 export const fetchUserRegister = createAsyncThunk(
   'user/userRegister',
   async (PersonalData, thunkAPI) => {
@@ -35,7 +39,8 @@ export const fetchUserLogIn = createAsyncThunk(
   async (PersonalData, thunkAPI) => {
     try {
       const response = await axios.post(`users/login`, PersonalData);
-      setAuthHeader(response.data.token);
+      console.log(response.data);
+
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -46,11 +51,22 @@ export const fetchUserLogIn = createAsyncThunk(
 export const fetchUserCurrent = createAsyncThunk(
   'user/userCurrent',
   async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(`users/current`);
-      return response.data;
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
+    const state = thunkAPI.getState();
+    const persistedToken = state.user.token;
+
+    if (persistedToken !== '') {
+      try {
+        setAuthHeader(persistedToken);
+        const response = await axios.get('users/current');
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(
+          <Alert status="error">
+            <AlertIcon status="warning" />
+            Unable to get current user
+          </Alert>
+        );
+      }
     }
   }
 );
@@ -58,11 +74,27 @@ export const fetchUserCurrent = createAsyncThunk(
 export const fetchUserParams = createAsyncThunk(
   'user/userParams',
   async (PersonalData, thunkAPI) => {
-    try {
-      const response = await axios.patch(`users/params`, PersonalData);
-      return response.data;
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
+    const state = thunkAPI.getState();
+    const persistedToken = state.user.token;
+
+    if (persistedToken !== '') {
+      try {
+        setAuthHeader(persistedToken);
+        const response = await axios.patch(`users/params`, PersonalData);
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(
+          <Alert status="error">
+            <AlertIcon status="warning" />
+            Unable to update current user
+          </Alert>
+        );
+      } finally {
+        <Alert status="success">
+          <AlertIcon status="success" />
+          Personal info has been updated
+        </Alert>;
+      }
     }
   }
 );
@@ -70,22 +102,33 @@ export const fetchUserParams = createAsyncThunk(
 export const fetchUserAvatars = createAsyncThunk(
   'user/userAvatars',
   async (avatarURL, thunkAPI) => {
-    try {
-      const response = await axios.patch(
-        `users/avatars/${avatarURL}`,
-        avatarURL,
-        {
+    const state = thunkAPI.getState();
+    const persistedToken = state.user.token;
+
+    if (persistedToken !== '') {
+      try {
+        setAuthHeader(persistedToken);
+        const formData = new FormData();
+        formData.append('avatar', avatarURL);
+        const response = await axios.patch(`users/avatars`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        }
-      );
-
-      console.log(response.data);
-
-      return response.data;
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
+        });
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(
+          <Alert status="error">
+            <AlertIcon status="warning" />
+            Unable to update user avatar
+          </Alert>
+        );
+      } finally {
+        <Alert status="success">
+          <AlertIcon status="success" />
+          Avatar has been updated
+        </Alert>;
+      }
     }
   }
 );
@@ -93,35 +136,39 @@ export const fetchUserAvatars = createAsyncThunk(
 export const fetchUserLogout = createAsyncThunk(
   'user/userLogout',
   async (_, thunkAPI) => {
-    try {
-      const response = await axios.post(`users/logout`);
-      return response.data;
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
+    const state = thunkAPI.getState();
+    const persistedToken = state.user.token;
+
+    if (persistedToken !== '') {
+      try {
+        removeAuthHeader();
+        const response = await axios.post(`users/logout`);
+
+        return response.data;
+      } catch (e) {
+        <Alert status="error">
+          <AlertIcon status="error" />
+          Logout failed
+        </Alert>;
+      } finally {
+        <Alert status="success">
+          <AlertIcon status="success" />
+          User logout
+        </Alert>;
+      }
     }
   }
 );
 
-export const refreshing = createAsyncThunk(
-  'user/refresh',
+export const accessRefreshing = createAsyncThunk(
+  'user/accessRefresh',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const persistedToken = state.user.token;
-    setAuthHeader(persistedToken);
-    if (persistedToken === null) {
-      return thunkAPI.rejectWithValue(
-        <Alert status="error" variant="top-accent">
-          <AlertIcon status="warning" />
-          Unable to fetch user
-        </Alert>
-      );
-    }
 
-    try {
-      const response = await axios.get('users/current');
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (persistedToken !== '') {
+      setAuthHeader(persistedToken);
+      return setAuthHeader;
     }
   }
 );

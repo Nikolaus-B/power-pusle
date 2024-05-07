@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import { object, string, number, date } from 'yup';
+import { useRef } from 'react';
 
 import {
   Input,
@@ -19,11 +20,11 @@ import { CheckCircleIcon } from '@chakra-ui/icons';
 //----------------------------------------------------
 import { useDispatch } from 'react-redux';
 import { fetchUserParams } from '../../redux/user/operations';
-import { useAuth } from '../../hooks/AuthHook';
+import { useHook } from '../../hooks/AuthHook';
 import { SexFilter } from './SexRadioGroup';
 import { BloodFilter } from './BloodRadioGroup';
 import { ActivityFilter } from './ActivityRadioGroup';
-// import StyledDatepicker from './StyledDatePicker.js';
+import StyledDatepicker from './StyledDatePicker';
 
 //----------------------------------------------------
 const validation = object({
@@ -39,14 +40,22 @@ const validation = object({
     .required('Required'),
   birthday: date()
     .nullable()
-    .default(() => new Date()),
+    .default(() => new Date('00.00.0000')),
 });
 
 //----------------------------------------------------
 
 export const UserForm = () => {
+  const ref = useRef();
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { user } = useHook();
+
+  console.log(user);
+
+  // const [selectedDate, setSelectedDate] = useState(
+  //   user
+  //     ? user.birthday
+  //     : Date.now(format(new Date(0o00, 0o0, 0o0), 'MM.dd.yyyy'))
 
   const handleSubmit = values => {
     const {
@@ -78,13 +87,13 @@ export const UserForm = () => {
     <Formik
       initialValues={{
         name: '',
-        blood: 0,
-        sex: '',
+        blood: 1,
+        sex: 'male',
         height: 0,
         currentWeight: 0,
         desiredWeight: 0,
         birthday: '',
-        levelActivity: 0,
+        levelActivity: 1,
       }}
       validationSchema={validation}
       onSubmit={(values, actions) => {
@@ -96,9 +105,11 @@ export const UserForm = () => {
         setFieldValue,
         handleSubmit,
         handleChange,
+        setValues,
         errors,
         touched,
         values,
+        innerRef,
       }) => (
         <Stack
           as="form"
@@ -131,7 +142,7 @@ export const UserForm = () => {
                   name="name"
                   type="text"
                   placeholder={user ? user.name : 'Name'}
-                  value={setFieldValue.name}
+                  value={values.name}
                   onChange={handleChange}
                   aria-label="name"
                   aria-invalid={true}
@@ -197,7 +208,7 @@ export const UserForm = () => {
                     name="height"
                     type="number"
                     placeholder={user ? user.height : 'Height'}
-                    value={setFieldValue.height}
+                    value={setValues.height}
                     onChange={handleChange}
                     aria-label="height"
                     h={['46px', '52px', '52px']}
@@ -235,7 +246,7 @@ export const UserForm = () => {
                     name="currentWeight"
                     type="number"
                     placeholder={user ? user.currentWeight : 'Current Weight'}
-                    value={setFieldValue.currentWeight}
+                    value={setValues.currentWeight}
                     onChange={handleChange}
                     aria-label="currentWeight"
                     h={['46px', '52px', '52px']}
@@ -274,11 +285,10 @@ export const UserForm = () => {
                     name="desiredWeight"
                     type="number"
                     placeholder={user ? user.desiredWeight : 'Desired Weight'}
-                    value={setFieldValue.desiredWeight}
+                    value={setValues.desiredWeight}
                     onChange={handleChange}
                     aria-label="desiredWeight"
                     h={['46px', '52px', '52px']}
-                    fontSize={[14, 16, 16]}
                     lineHeight={['129%', '150%', '150%']}
                   />
 
@@ -298,23 +308,31 @@ export const UserForm = () => {
 
                 <FormControl alignSelf="baseline">
                   <FormLabel
-                    fontSize={{ base: '12px', md: '14px' }}
-                    lineHeight={{ base: '150%', md: '129%' }}
-                    mb={{ base: '4px', md: '8px' }}
+                    fontSize={[12, 14, 14]}
+                    lineHeight={['150%', '129%', '129%']}
+                    mb={[1, 2, 2]}
                   >
                     Date of birth
                   </FormLabel>
 
-                  <Input
+                  {/* <Input
                     name="birthday"
                     type="date"
                     placeholder={user ? user.birthday : 'Select Date'}
-                    value={setFieldValue.birthday}
+                    value={setValues.birthday}
                     onChange={handleChange}
                     aria-label="birthday"
                     h={{ base: '46px', md: '52px' }}
                     fontSize={{ base: '14px', md: '16px' }}
                     lineHeight={{ base: '129%', md: '150%' }}
+                  /> */}
+
+                  <StyledDatepicker
+                    innerRef={ref}
+                    as={Input}
+                    type="date"
+                    name="birthday"
+                    onChange={handleChange}
                   />
                 </FormControl>
               </HStack>

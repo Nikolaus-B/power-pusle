@@ -16,13 +16,13 @@ import { Icon } from 'components/Icon/Icon';
 
 //------------------------------------------
 import { useDispatch } from 'react-redux';
-import { useAuth } from 'hooks/AuthHook';
+import { useHook } from 'hooks/AuthHook';
 import { clearData, setDate } from '../../redux/diary/diarySlice';
 import { DaySwichIcons } from './DaySwichIcons';
 
 export const DaySwitch = ({ media }) => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { user } = useHook();
   const calRef = useRef();
   const [startDate, setCurrentDate] = useState(new Date());
   const today = new Date();

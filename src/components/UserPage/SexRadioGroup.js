@@ -48,7 +48,6 @@ export const SexFilter = ({ options, defaultValue, setFieldValue }) => {
   const { value, getRadioProps, getRootProps } = useRadioGroup({
     defaultValue,
     name: 'sex',
-    type: 'radio',
     onChange: value => setFieldValue('sex', value),
   });
 

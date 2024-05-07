@@ -7,6 +7,8 @@ import {
   ExclamationMarkIcon,
 } from './styles/Icon.styled.js';
 import {
+  Alert,
+  AlertIcon,
   Avatar,
   Badge,
   Button,
@@ -26,25 +28,17 @@ import CheckMark from '../../img/CheckMark.svg';
 
 //------------------------------------------------
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
 import { clearData } from '../../redux/diary/diarySlice.js';
-import { useAuth } from '../../hooks/AuthHook.js';
+import { useHook } from '../../hooks/AuthHook.js';
 import {
   fetchUserLogout,
-  fetchUserCurrent,
   fetchUserAvatars,
 } from '../../redux/user/operations.js';
 
 //------------------------------------------------
 export const UserCard = () => {
   const dispatch = useDispatch();
-  const { user, bmr, dailyRateSports } = useAuth();
-
-  console.log(user.avatarURL);
-
-  useEffect(() => {
-    dispatch(fetchUserCurrent());
-  }, [dispatch]);
+  const { user, bmr, dailyRateSports } = useHook();
 
   const logOut = () => {
     dispatch(clearData());
@@ -52,18 +46,17 @@ export const UserCard = () => {
   };
 
   //-------setAvatar---------
-
-  const [selectedAvatar, setAvatar] = useState(null);
-
   const handleAvatarChange = e => {
-    const avatar = e.target.file;
-    console.log(avatar);
-    setAvatar(avatar);
-  };
-
-  const appendAvatar = avatar => {
-    const formData = new FormData();
-    formData.append('avatar', selectedAvatar);
+    try {
+      dispatch(fetchUserAvatars(e.target.files[0]));
+      user.avatarURL = URL.createObjectURL(e.target.files[0]);
+    } catch (error) {
+      <Alert status="error" variant="top-accent">
+        <AlertIcon status="warning" />
+        Something went wrong!
+      </Alert>;
+    }
+    return e.target.value;
   };
 
   return (
@@ -74,15 +67,14 @@ export const UserCard = () => {
             <Avatar
               icon={
                 <Image
+                  id="avatar"
                   src={
-                    user ? (
-                      user.avatarURL
-                    ) : (
-                      <AvatarPlug w={[41, 68, 68]} h={[41, 68, 68]} />
-                    )
+                    user?.avatarURL
+                      ? `https://power-pulse-back.onrender.com/${user.avatarURL}`
+                      : AvatarPlug
                   }
-                  w={[88, 148, 148]}
-                  h={[88, 148, 148]}
+                  w={user?.avatarURL !== '' ? [88, 148, 148] : [41, 68, 68]}
+                  h={user?.avatarURL !== '' ? [88, 148, 148] : [41, 68, 68]}
                   rounded="50%"
                 />
               }
@@ -93,16 +85,13 @@ export const UserCard = () => {
               <Input
                 type="file"
                 id="fileEl"
-                multiple
                 accept="image/*"
                 display="none"
-                onChange={e =>
-                  dispatch(fetchUserAvatars({ avatar: e.target.files[0] }))
-                }
+                onChange={e => handleAvatarChange(e)}
               />
               <FormLabel
                 htmlFor="fileEl"
-                onClick={appendAvatar(handleAvatarChange)}
+                onClick={e => (e.target.value = null)}
                 //-----------------------
                 pos="absolute"
                 right={[7, 14, 14]}

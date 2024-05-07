@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+//---------------------------------------
 import {
   ChakraProvider,
   Container,
@@ -12,7 +14,18 @@ import { UserCard } from './UserCard';
 import { UserForm } from './UserForm';
 //---------------------------------------
 
+import {
+  accessRefreshing,
+  fetchUserCurrent,
+} from '../../redux/user/operations';
+
 export const ProfilePage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserCurrent());
+  }, [dispatch]);
+
   return (
     <ChakraProvider theme={theme} resetCSS>
       <Container px={[5, 8, 8]} centerContent>

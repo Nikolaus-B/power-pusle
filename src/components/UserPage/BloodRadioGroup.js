@@ -14,6 +14,8 @@ export const BloodFilter = ({ options, defaultValue, setFieldValue }) => {
     const { state, getInputProps, getRadioProps, getLabelProps, htmlProps } =
       useRadio(radioProps);
 
+    console.log(defaultValue);
+
     return (
       <chakra.label {...htmlProps} cursor="pointer">
         <input {...getInputProps({})} hidden />
@@ -46,10 +48,9 @@ export const BloodFilter = ({ options, defaultValue, setFieldValue }) => {
   }
 
   const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue,
+    defaultValue: defaultValue,
     name: 'blood',
-    type: 'radio',
-    onChange: value => setFieldValue('blood', parseInt(value)),
+    onChange: value => setFieldValue('blood', value),
   });
 
   console.log(value);
@@ -60,11 +61,12 @@ export const BloodFilter = ({ options, defaultValue, setFieldValue }) => {
         return (
           <CustomRadio
             key={value}
-            text={String(value)}
+            text={value}
             value={value}
             {...getRadioProps({
               value: value,
-              isChecked: setFieldValue?.blood === value ? true : false,
+              isChecked:
+                setFieldValue?.blood === parseInt(value) ? true : false,
             })}
           />
         );

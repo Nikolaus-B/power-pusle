@@ -46,14 +46,13 @@ export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
     );
   }
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
+  const { getRadioProps, getRootProps } = useRadioGroup({
     defaultValue,
     name: 'levelActivity',
-    type: 'radio',
     onChange: value => setFieldValue('levelActivity', parseInt(value)),
   });
 
-  console.log(value);
+  // console.log(value);
 
   return (
     <VStack {...getRootProps()} align="start" spacing={2}>
@@ -65,7 +64,7 @@ export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
             value={value}
             {...getRadioProps({
               value: value,
-              isChecked: setFieldValue?.levelActivity === value ? true : false,
+              isChecked: value,
             })}
           />
         );

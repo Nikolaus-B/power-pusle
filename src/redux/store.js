@@ -18,7 +18,15 @@ import { diaryReducer } from './diary/diarySlice';
 const authPersistConfig = {
   key: 'user',
   storage,
-  whitelist: ['token', 'name', 'bmr', 'dailyRateSports'],
+  whitelist: [
+    'name',
+    'token',
+    'bmr',
+    'dailyRateSports',
+    'blood',
+    'sex',
+    'levelActivity',
+  ],
   blacklist: ['chakra', 'light'],
 };
 
