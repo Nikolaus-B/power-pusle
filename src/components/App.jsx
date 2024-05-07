@@ -1,9 +1,7 @@
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { AppLayout } from './AppLayout/AppLayout';
-import { useDispatch } from 'react-redux';
 
-import { refreshing } from '../redux/user/operations';
 import { RestrictedRoute } from './RestrictedRoute';
 import { PrivateRoute } from './PrivateRoute';
 
@@ -18,12 +16,6 @@ const ExercisesPage = lazy(() => import('pages/ExercisesPage'));
 const TitlePage = lazy(() => import('pages/TitlePage'));
 
 export const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(refreshing());
-  }, [dispatch]);
-
   return (
     <>
       <Routes>
