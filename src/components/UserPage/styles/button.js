@@ -51,7 +51,7 @@ const variantOutline = defineStyle({
   p: '14px',
 
   color: '#efede8',
-  // background: 'transparent',
+  bgColor: 'transparent',
   borderRadius: '12px',
   border: '1px solid',
   borderColor: 'rgba(239, 237, 232, 0.3)',
@@ -63,10 +63,12 @@ const variantOutline = defineStyle({
   textTransform: 'uppercase',
 
   _hover: {
+    color: '#efede8',
     bgColor: 'transparent',
     borderColor: '#e6533c',
   },
   _focus: {
+    color: '#efede8',
     bgColor: 'transparent',
     borderColor: '#e6533c',
   },

@@ -17,7 +17,6 @@ const initialState = {
   products: [],
   exercises: [],
 };
-
 const diarySlice = createSlice({
   name: 'diary',
   initialState,

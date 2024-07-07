@@ -8,8 +8,9 @@ import {
   useRadio,
   useRadioGroup,
 } from '@chakra-ui/react';
+import { defaultTheme } from 'react-select';
 
-export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
+export const ActivityFilter = ({ options, defaultValue }) => {
   function CustomRadio(props) {
     const { text, ...radioProps } = props;
     const { state, getInputProps, getRadioProps, getLabelProps, htmlProps } =
@@ -20,7 +21,7 @@ export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
         <input {...getInputProps({})} hidden />
         <HStack>
           <Flex
-            {...getRadioProps()}
+            {...getRadioProps({})}
             spacing={1}
             p={1}
             border="2px solid"
@@ -28,10 +29,10 @@ export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
             rounded="full"
           >
             <Box
+              {...getLabelProps()}
               p={['4px', '5px', '5px']}
               bg={state.isChecked ? '#ef8964' : 'transparent'}
               rounded="full"
-              {...getLabelProps()}
             ></Box>
           </Flex>
           <Text
@@ -47,25 +48,20 @@ export const ActivityFilter = ({ options, defaultValue, setFieldValue }) => {
   }
 
   const { getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue,
     name: 'levelActivity',
-    onChange: value => setFieldValue('levelActivity', parseInt(value)),
   });
 
-  // console.log(value);
+  // console.log(defaultValue);
 
   return (
     <VStack {...getRootProps()} align="start" spacing={2}>
-      {options.map(({ text, value }) => {
+      {options.map(({ value, text, id }) => {
         return (
           <CustomRadio
-            key={value}
+            {...getRadioProps({ value: defaultValue })}
+            key={id}
             text={String(text)}
-            value={value}
-            {...getRadioProps({
-              value: value,
-              isChecked: value,
-            })}
+            setValue={value?.isChecked === true ? value : defaultValue}
           />
         );
       })}

@@ -15,10 +15,10 @@ import { UserForm } from './UserForm';
 //---------------------------------------
 
 import {
-  accessRefreshing,
+  // accessRefreshing,
   fetchUserCurrent,
 } from '../../redux/user/operations';
-
+//
 export const ProfilePage = () => {
   const dispatch = useDispatch();
 

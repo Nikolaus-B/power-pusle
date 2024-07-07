@@ -1,6 +1,8 @@
 import { Formik } from 'formik';
 import { object, string, number, date } from 'yup';
-import { useRef } from 'react';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import DatePicker from 'react-datepicker';
 
 import {
   Input,
@@ -24,7 +26,9 @@ import { useHook } from '../../hooks/AuthHook';
 import { SexFilter } from './SexRadioGroup';
 import { BloodFilter } from './BloodRadioGroup';
 import { ActivityFilter } from './ActivityRadioGroup';
-import StyledDatepicker from './StyledDatePicker';
+import { CalendarGlobalStyles } from './styles/Datepicker.styled';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import { CustomInput } from './CustomInput';
 
 //----------------------------------------------------
 const validation = object({
@@ -46,16 +50,10 @@ const validation = object({
 //----------------------------------------------------
 
 export const UserForm = () => {
-  const ref = useRef();
   const dispatch = useDispatch();
   const { user } = useHook();
 
-  console.log(user);
-
-  // const [selectedDate, setSelectedDate] = useState(
-  //   user
-  //     ? user.birthday
-  //     : Date.now(format(new Date(0o00, 0o0, 0o0), 'MM.dd.yyyy'))
+  const [startDate, setStartDate] = useState(new Date());
 
   const handleSubmit = values => {
     const {
@@ -105,11 +103,9 @@ export const UserForm = () => {
         setFieldValue,
         handleSubmit,
         handleChange,
-        setValues,
         errors,
         touched,
         values,
-        innerRef,
       }) => (
         <Stack
           as="form"
@@ -190,6 +186,7 @@ export const UserForm = () => {
             <Stack
               direction={{ base: 'column', md: 'row', xl: 'row' }}
               spacing="14px"
+              data-focus={{ _hover: 'transparent' }}
             >
               <HStack spacing="14px" w="100%">
                 <FormControl
@@ -208,7 +205,7 @@ export const UserForm = () => {
                     name="height"
                     type="number"
                     placeholder={user ? user.height : 'Height'}
-                    value={setValues.height}
+                    value={svalues.height}
                     onChange={handleChange}
                     aria-label="height"
                     h={['46px', '52px', '52px']}
@@ -246,7 +243,7 @@ export const UserForm = () => {
                     name="currentWeight"
                     type="number"
                     placeholder={user ? user.currentWeight : 'Current Weight'}
-                    value={setValues.currentWeight}
+                    value={values.currentWeight}
                     onChange={handleChange}
                     aria-label="currentWeight"
                     h={['46px', '52px', '52px']}
@@ -285,7 +282,7 @@ export const UserForm = () => {
                     name="desiredWeight"
                     type="number"
                     placeholder={user ? user.desiredWeight : 'Desired Weight'}
-                    value={setValues.desiredWeight}
+                    value={values.desiredWeight}
                     onChange={handleChange}
                     aria-label="desiredWeight"
                     h={['46px', '52px', '52px']}
@@ -315,25 +312,19 @@ export const UserForm = () => {
                     Date of birth
                   </FormLabel>
 
-                  {/* <Input
-                    name="birthday"
-                    type="date"
-                    placeholder={user ? user.birthday : 'Select Date'}
-                    value={setValues.birthday}
-                    onChange={handleChange}
-                    aria-label="birthday"
-                    h={{ base: '46px', md: '52px' }}
-                    fontSize={{ base: '14px', md: '16px' }}
-                    lineHeight={{ base: '129%', md: '150%' }}
-                  /> */}
-
-                  <StyledDatepicker
-                    innerRef={ref}
-                    as={Input}
-                    type="date"
-                    name="birthday"
-                    onChange={handleChange}
+                  {/* <DatePicker
+                    showIcon={false}
+                    dateFormat={'MM/dd/yyyy'}
+                    calendarStartDay={1}
+                    formatWeekDay={day => day.substring(0, 2)}
+                    placeholderText="Weeks start on Monday"
+                    selected={user.birthday}
+                    setFieldValue={startDate}
+                    onChange={date => setStartDate(date)}
+                    customInput={<CustomInput />}
+                    popperPlacement="top-end"
                   />
+                  <CalendarGlobalStyles /> */}
                 </FormControl>
               </HStack>
             </Stack>
@@ -386,32 +377,37 @@ export const UserForm = () => {
             <ActivityFilter
               options={[
                 {
-                  text: 'Sedentary lifestyle (little or no physical activity)',
                   value: '1',
+                  text: 'Sedentary lifestyle (little or no physical activity)',
+                  id: '1',
                 },
                 {
-                  text: 'Light activity (light exercises/sports 1-3 days per week)',
                   value: '2',
+                  text: 'Light activity (light exercises/sports 1-3 days per week)',
+                  id: '2',
                 },
                 {
-                  text: 'Moderately active (moderate exercises/sports 3-5 days per week)',
                   value: '3',
+                  text: 'Moderately active (moderate exercises/sports 3-5 days per week)',
+                  id: '3',
                 },
                 {
-                  text: 'Very active (intense exercises/sports 6-7 days per week)',
                   value: '4',
+                  text: 'Very active (intense exercises/sports 6-7 days per week)',
+                  id: '4',
                 },
                 {
-                  text: 'Extremely active (very strenuous exercises/sports and physical work)',
                   value: '5',
+                  text: 'Extremely active (very strenuous exercises/sports and physical work)',
+                  id: '5',
                 },
               ]}
               defaultValue={values.levelActivity}
-              setFieldValue={setFieldValue}
+              onChange={handleChange}
             />
           </Stack>
           <Button
-            type="submit"
+            type="button"
             w={[115, 144, 144]}
             mt={[10, 10, 12]}
             size={{ base: 'base', md: 'md', xl: 'md' }}

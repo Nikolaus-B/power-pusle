@@ -108,8 +108,6 @@ export const UserMenu = () => {
                 ? [`https://power-pulse-back.onrender.com/${user.avatarURL}`]
                 : [AvatarPlug]
             }
-            w={user?.avatarURL !== '' ? '46px' : '24px'}
-            h={user?.avatarURL !== '' ? '46px' : '24px'}
           />
         </AvatarHeader>
 

@@ -141,15 +141,16 @@ export const fetchUserLogout = createAsyncThunk(
 
     if (persistedToken !== '') {
       try {
-        removeAuthHeader();
         const response = await axios.post(`users/logout`);
-
+        removeAuthHeader();
         return response.data;
       } catch (e) {
-        <Alert status="error">
-          <AlertIcon status="error" />
-          Logout failed
-        </Alert>;
+        return thunkAPI.rejectWithValue(
+          <Alert status="error">
+            <AlertIcon status="warning" />
+            Logout failed
+          </Alert>
+        );
       } finally {
         <Alert status="success">
           <AlertIcon status="success" />
@@ -166,9 +167,27 @@ export const accessRefreshing = createAsyncThunk(
     const state = thunkAPI.getState();
     const persistedToken = state.user.token;
 
-    if (persistedToken !== '') {
-      setAuthHeader(persistedToken);
-      return setAuthHeader;
+    if (persistedToken === '') {
+      return thunkAPI.rejectWithValue(
+        <Alert status="error">
+          <AlertIcon status="warning" />
+          Unable to get token
+        </Alert>
+      );
     }
   }
 );
+
+// const persistedToken = thunkAPI => {
+//   const state = thunkAPI.getState();
+//   const persistedToken = state.user.token;
+
+//   if (persistedToken === '') {
+//     <Alert status="error">
+//       <AlertIcon status="warning" />
+//       Unable to get token
+//     </Alert>;
+//   }
+
+//   return persistedToken;
+// };

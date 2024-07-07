@@ -48,7 +48,7 @@ export const SexFilter = ({ options, defaultValue, setFieldValue }) => {
   const { value, getRadioProps, getRootProps } = useRadioGroup({
     defaultValue,
     name: 'sex',
-    onChange: value => setFieldValue('sex', value),
+    onChange: value => setFieldValue('sex', value.isChecked),
   });
 
   console.log(value);
@@ -62,8 +62,8 @@ export const SexFilter = ({ options, defaultValue, setFieldValue }) => {
             text={value}
             value={value}
             {...getRadioProps({
-              value: value,
-              isChecked: setFieldValue?.sex === value ? true : false,
+              value: defaultValue,
+              defaultChecked: true,
             })}
           />
         );

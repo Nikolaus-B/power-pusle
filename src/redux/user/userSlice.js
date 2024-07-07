@@ -24,8 +24,8 @@ const initialState = {
     createdAt: null,
   },
   token: null,
-  isLoggedIn: false,
-  isRefreshing: false,
+  isLoggedIn: null,
+  isRefreshing: null,
   isLoading: true,
   isError: null,
   bmr: 0,
@@ -92,6 +92,7 @@ const userSlice = createSlice({
         state.user = action.payload.user;
         state.isLoggedIn = true;
         state.isLoading = false;
+        state.isRefreshing = true;
         state.bmr = action.payload.bmr;
         state.dailyRateSports = action.payload.dailyRateSports;
       })
@@ -102,17 +103,22 @@ const userSlice = createSlice({
       .addCase(fetchUserParams.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isLoggedIn = true;
-        state.isLoading = false;
+        state.isLoading = true;
+        state.isRefreshing = true;
         state.bmr = action.payload.bmr;
         state.dailyRateSports = action.payload.dailyRateSports;
       })
       .addCase(fetchUserParams.rejected, handleRejected)
 
       //--------------------------------
-      .addCase(fetchUserAvatars.pending, handlePending)
+      .addCase(fetchUserAvatars.pending, (state, action) => {
+        state.isRefreshing = true;
+        state.isLoading = true;
+      })
       .addCase(fetchUserAvatars.fulfilled, (state, action) => {
         state.avatarURL = action.payload.avatarURL;
         state.isRefreshing = true;
+        state.isLoading = false;
         state.isLoggedIn = true;
       })
       .addCase(fetchUserAvatars.rejected, handleRejected)

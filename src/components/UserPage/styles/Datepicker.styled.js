@@ -30,19 +30,18 @@ export const CalendarGlobalStyles = createGlobalStyle`
 
   }
   .react-datepicker {
-    position: absolute;
-    right: 50%;
-    top: 50%;
-    transform: translate(50px, 0%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 215px;
+    width: 220px;
     height: auto;
     padding: 14px;
     background-color: #ef8964;
     font-family: inherit;
     border-radius: 8px;
+  }
+  .react-datepicker__tab-loop:hover {
+    background-color: transparent;
   }
   .react-datepicker__month-container {
     float: inherit;

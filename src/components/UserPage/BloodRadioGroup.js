@@ -47,26 +47,21 @@ export const BloodFilter = ({ options, defaultValue, setFieldValue }) => {
     );
   }
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: defaultValue,
+  const { getRadioProps, getRootProps } = useRadioGroup({
     name: 'blood',
-    onChange: value => setFieldValue('blood', value),
+    onChange: value => setFieldValue('blood', value.isChecked),
   });
-
-  console.log(value);
 
   return (
     <HStack {...getRootProps()} spacing={2}>
-      {options.map(({ value }) => {
+      {options.map(({ id, value }) => {
         return (
           <CustomRadio
-            key={value}
+            key={id}
             text={value}
-            value={value}
+            // value={setFieldValue(value.id)}
             {...getRadioProps({
-              value: value,
-              isChecked:
-                setFieldValue?.blood === parseInt(value) ? true : false,
+              defaultChecked: true,
             })}
           />
         );
